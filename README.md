@@ -19,8 +19,8 @@ b := []byte(`{
 
 jsons.String(b, "name.first") //Tom
 jsons.Int(b, "age") //37
-jsons.String(b, "friends[0].first") //Dale
-jsons.StringArray(b, "friends[0].nets") //["ig", "fb", "tw"]
+jsons.String(b, "friends.0.first") //Dale
+jsons.StringArray(b, "friends.0.nets") //["ig", "fb", "tw"]
 ```
 
 ## Create a json
@@ -28,6 +28,6 @@ jsons.StringArray(b, "friends[0].nets") //["ig", "fb", "tw"]
 b := jsons.Create().
   Add("name","Tom").
   Add("Age", 37).
-  Add("friends[0].nets", ["ig", "fb", "tw"]).
+  Add("friends.0.nets", ["ig", "fb", "tw"]).
   Bytes()
 ```
