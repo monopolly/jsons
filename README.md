@@ -1,5 +1,5 @@
 # Jsons
-Based on cjson &amp; gjson. Fast works with json withou an allocations.
+Based on cjson &amp; gjson. Fast works with json without an allocations.
 
 
 ## Get a values
