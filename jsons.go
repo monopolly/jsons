@@ -40,7 +40,7 @@ func keys(k []string) string {
 	return strings.Join(k, ".")
 }
 
-//"name.last"
+// "name.last"
 func String(a []byte, path ...string) string {
 	return gjson.GetBytes(a, keys(path)).String()
 }
@@ -101,7 +101,7 @@ func Float32(a []byte, path ...string) float32 {
 	return float32(gjson.GetBytes(a, keys(path)).Float())
 }
 
-//Bytes get raw json
+// Bytes get raw json
 func Bytes(a []byte, path ...string) (res []byte) {
 	return []byte(gjson.GetBytes(a, keys(path)).Raw)
 }
@@ -273,7 +273,7 @@ func ArrayString(a []byte, path ...string) (r []string) {
 	return
 }
 
-//ArrayStringAppend append unique items (no duplicates)
+// ArrayStringAppend append unique items (no duplicates)
 func ArrayStringAppend(a []byte, key string, items ...string) (res []byte) {
 	var list []string
 	un := make(map[string]bool)
@@ -422,13 +422,13 @@ func Delete(a []byte, keys ...string) (b []byte) {
 	return
 }
 
-//Set set non json into key
+// Set set non json into key
 func Set(a []byte, key string, v interface{}) (b []byte) {
 	b, _ = sjson.SetBytes(a, key, v)
 	return
 }
 
-//SetRaw set json into key
+// SetRaw set json into key
 func SetRaw(a []byte, key string, v []byte) (b []byte) {
 	b, _ = sjson.SetRawBytes(a, key, v)
 	return
@@ -447,8 +447,13 @@ func Print(v interface{}) {
 }
 
 func Join(v [][]byte) (res []byte) {
-	res = []byte("[")
-	res = append(res, bytes.Join(v, []byte(","))...)
-	res = append(res, []byte("]")...)
+	var w bytes.Buffer
+	w.WriteString("[")
+	for _, x := range v {
+		w.Write(x)
+		w.WriteString(",")
+	}
+	res = w.Bytes()
+	res[len(res)-1] = ']'
 	return
 }
