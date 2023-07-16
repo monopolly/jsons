@@ -5,7 +5,9 @@ import (
 )
 
 func Create() (r *Json) {
-	return &Json{}
+	r = &Json{}
+	r.b = make(map[string]interface{})
+	return r
 }
 
 func Creates(k string, v interface{}) (r *Json) {
