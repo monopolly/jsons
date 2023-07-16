@@ -1,6 +1,8 @@
 package jsons
 
-import "fmt"
+import (
+	"encoding/json"
+)
 
 func Create() (r *Json) {
 	return &Json{}
@@ -8,35 +10,38 @@ func Create() (r *Json) {
 
 func Creates(k string, v interface{}) (r *Json) {
 	r = &Json{}
+	r.b = make(map[string]interface{})
 	r.Add(k, v)
 	return
 }
 
 type Json struct {
-	count int
-	b     []byte
+	b     map[string]interface{}
+	array []interface{}
 }
 
 func (a *Json) Add(k string, v interface{}) *Json {
-	a.b = Set(a.b, k, v)
+	a.b[k] = v
 	return a
 }
 
 func (a *Json) AddRaw(k string, v []byte) *Json {
-	a.b = SetRaw(a.b, k, v)
+	m := make(map[string]interface{})
+	json.Unmarshal(v, &m)
+	a.b[k] = m
 	return a
 }
 
 func (a *Json) Array(v interface{}) *Json {
-	a.b = Set(a.b, fmt.Sprint(a.count), v)
-	a.count++
+	a.array = append(a.array, v)
 	return a
 }
 
-func (a *Json) Bytes() []byte {
-	return a.b
+func (a *Json) Bytes() (res []byte) {
+	res, _ = json.Marshal(a.b)
+	return
 }
 
 func (a *Json) String() string {
-	return string(a.b)
+	return string(a.Bytes())
 }
