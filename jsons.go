@@ -357,12 +357,26 @@ func MapString(a []byte, path ...string) (r map[string]string) {
 	}
 	return
 }
-
-func MapInterface(a []byte, path ...string) (r map[string]interface{}) {
+func MapFloats(a []byte, path ...string) (r map[string]float64) {
 	if a == nil {
 		return
 	}
-	r = make(map[string]interface{})
+	r = make(map[string]float64)
+	for k, v := range gjson.GetBytes(a, keys(path)).Map() {
+		r[k] = v.Float()
+	}
+	return
+}
+
+func MapAny(a []byte, path ...string) (r map[string]any) {
+	return MapInterface(a, path...)
+}
+
+func MapInterface(a []byte, path ...string) (r map[string]any) {
+	if a == nil {
+		return
+	}
+	r = make(map[string]any)
 	for k, v := range gjson.GetBytes(a, keys(path)).Map() {
 		r[k] = v.Value()
 	}
@@ -416,8 +430,9 @@ func MapIntInt(a []byte, path ...string) (r map[int]int) {
 }
 
 func Delete(a []byte, keys ...string) (b []byte) {
+	b = a
 	for _, x := range keys {
-		b, _ = sjson.DeleteBytes(a, x)
+		b, _ = sjson.DeleteBytes(b, x)
 	}
 	return
 }
